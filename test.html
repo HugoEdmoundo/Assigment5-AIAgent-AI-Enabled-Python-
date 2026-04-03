@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Agent Tool Tester</title>
+</head>
+<body>
+    <h1>AI Agent Tool Tester</h1>
+    
+    <h2>Text Analyzer</h2>
+    <textarea id="analyzeText" rows="4" cols="50">Hello world! This is a test.</textarea><br>
+    <button onclick="analyzeText()">Analyze Text</button>
+    <div id="analyzeResult"></div>
+    
+    <hr>
+    
+    <h2>Calculator</h2>
+    <input type="text" id="calcExpression" value="2 + 2 * 3"><br>
+    <button onclick="calculate()">Calculate</button>
+    <div id="calcResult"></div>
+    
+    <hr>
+    
+    <h2>Word Counter</h2>
+    <textarea id="countText" rows="3" cols="50">The fox jumps. The fox runs.</textarea><br>
+    <input type="text" id="countWord" value="fox" placeholder="Word to count"><br>
+    <button onclick="countWords()">Count Words</button>
+    <div id="countResult"></div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+
+        async function analyzeText() {
+            const text = document.getElementById('analyzeText').value;
+            const resultDiv = document.getElementById('analyzeResult');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/tools/execute`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tool_name: 'analyze_text',
+                        parameters: { text }
+                    })
+                });
+                const data = await response.json();
+                resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color:red">Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function calculate() {
+            const expression = document.getElementById('calcExpression').value;
+            const resultDiv = document.getElementById('calcResult');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/tools/execute`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tool_name: 'calculate',
+                        parameters: { expression }
+                    })
+                });
+                const data = await response.json();
+                resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color:red">Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function countWords() {
+            const text = document.getElementById('countText').value;
+            const word = document.getElementById('countWord').value;
+            const resultDiv = document.getElementById('countResult');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/tools/execute`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tool_name: 'count_words',
+                        parameters: { text, word }
+                    })
+                });
+                const data = await response.json();
+                resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color:red">Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+[project]
+name = "assigment5"
+version = "0.1.0"
+description = "FastAPI AI Agent with multiple tools"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "sqlalchemy>=2.0.25",
+    "alembic>=1.13.1",
+    "python-dotenv>=1.0.0",
+    "httpx>=0.26.0",
+    "litellm>=1.0.0",
+    "scalar-fastapi>=1.8.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.4.0",
+    "httpx>=0.26.0",
+]
+
+[project.scripts]
+dev = "uvicorn app.main:app --reload --port 8000"
+start = "uvicorn app.main:app --port 8000"
+
